@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+  <meta charset="UTF-8">
+  <title>Eswar Designed Interest Calculator</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 40px;
+      background-color: #f2f2f2;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 40px;
+    }
+
+    .button {
+      padding: 15px 30px;
+      margin: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      transition: background 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+
+    .sub-heading {
+      font-size: 20px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧮 Eswar Designed Interest Calculator</h1>
+
+  <div class="sub-heading">దయచేసి ఒక ఎంపికను ఎంచుకోండి:</div>
+
+  <br>
+
+  <button class="button" onclick="goToCalculator()">క్యాల్కులేటర్</button>
+  <button class="button" onclick="goToGames()">ఆటలు</button>
+
+  <script>
+    function goToCalculator() {
+      window.location.href = "calculator.html";
+    }
+
+    function goToGames() {
+      alert("ఆటలు త్వరలో వస్తున్నాయి!");
+    }
+  </script>
+
+</body>
+</html>
