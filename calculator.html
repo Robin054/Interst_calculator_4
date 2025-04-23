@@ -190,11 +190,17 @@
         return;
       }
 
-      const interestRate = interestPer100 / 100;
+      // Calculate total days
       const timeDiff = toDate - fromDate;
-      const months = Math.ceil(timeDiff / (1000 * 60 * 60 * 24 * 30));
+      const totalDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
-      const interest = (principal * interestRate * months).toFixed(2);
+      // Convert days to months and remaining days
+      const months = Math.floor(totalDays / 30);
+      const days = totalDays % 30;
+
+      // Calculate interest based on total days
+      const dailyInterestRate = (interestPer100 / 100) / 30;
+      const interest = (principal * dailyInterestRate * totalDays).toFixed(2);
       const totalAmount = (principal + parseFloat(interest)).toFixed(2);
 
       document.getElementById('result').innerHTML = `
@@ -209,7 +215,7 @@
             <td class="value-text">రూ ${interestPer100} ప్రతి ₹100కి</td>
           </tr>
           <tr>
-            <td class="label-text">${months} నెలల వడ్డీ:</td>
+            <td class="label-text">${months} నెలలు ${days} రోజులు వడ్డీ:</td>
             <td class="value-text">రూ ${interest}</td>
           </tr>
           <tr>
