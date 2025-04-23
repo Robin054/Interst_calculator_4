@@ -123,9 +123,15 @@
       const msPerDay = 1000 * 60 * 60 * 24;
       const totalDays = Math.round((toDate - fromDate) / msPerDay) + 1;
 
-      // Calculate months and remaining days (assuming 30 days per month)
-      const months = Math.floor(totalDays / 30);
-      const days = totalDays % 30;
+      // Calculate months and remaining days (using getFullYear and getMonth)
+      let months = toDate.getMonth() - fromDate.getMonth() + (12 * (toDate.getFullYear() - fromDate.getFullYear()));
+      if (toDate.getDate() < fromDate.getDate()) {
+        months--;
+      }
+      const days = toDate.getDate() - fromDate.getDate();
+
+      // Adjust days in case the day count overflows
+      let actualDays = days < 0 ? (new Date(toDate.getFullYear(), toDate.getMonth(), 0).getDate() + days) : days;
 
       // Calculate interest
       const ratePerDay = (interestPer100 / 100) / 30;
@@ -145,7 +151,7 @@
             <td class="value-text">రూ ${interestPer100} / ₹100</td>
           </tr>
           <tr>
-            <td class="label-text">${months} నెలలు ${days} రోజులు:</td>
+            <td class="label-text">${months} నెలలు ${actualDays} రోజులు:</td>
             <td class="value-text">రూ ${totalInterest}</td>
           </tr>
           <tr>
