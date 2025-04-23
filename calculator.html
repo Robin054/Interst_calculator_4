@@ -119,22 +119,16 @@
         return;
       }
 
-      // Calculate total days including both start and end dates
+      // Calculate the difference in days using 360-day year assumption
       const msPerDay = 1000 * 60 * 60 * 24;
       const totalDays = Math.round((toDate - fromDate) / msPerDay) + 1;
 
-      // Calculate months and remaining days (using getFullYear and getMonth)
-      let months = toDate.getMonth() - fromDate.getMonth() + (12 * (toDate.getFullYear() - fromDate.getFullYear()));
-      if (toDate.getDate() < fromDate.getDate()) {
-        months--;
-      }
-      const days = toDate.getDate() - fromDate.getDate();
-
-      // Adjust days in case the day count overflows
-      let actualDays = days < 0 ? (new Date(toDate.getFullYear(), toDate.getMonth(), 0).getDate() + days) : days;
+      // Calculate months based on the 360-day year assumption (12 months, each month 30 days)
+      const totalMonths = Math.floor(totalDays / 30);  // Each month is 30 days
+      const remainingDays = totalDays % 30;
 
       // Calculate interest
-      const ratePerDay = (interestPer100 / 100) / 30;
+      const ratePerDay = (interestPer100 / 100) / 30; // Per day interest for each 100
       const perDayInterest = (principal * ratePerDay).toFixed(2);
       const totalInterest = (principal * ratePerDay * totalDays).toFixed(2);
       const totalAmount = (principal + parseFloat(totalInterest)).toFixed(2);
@@ -151,7 +145,7 @@
             <td class="value-text">రూ ${interestPer100} / ₹100</td>
           </tr>
           <tr>
-            <td class="label-text">${months} నెలలు ${actualDays} రోజులు:</td>
+            <td class="label-text">${totalMonths} నెలలు ${remainingDays} రోజులు:</td>
             <td class="value-text">రూ ${totalInterest}</td>
           </tr>
           <tr>
