@@ -2,22 +2,32 @@
 <html lang="te">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>సాధారణ వడ్డీ లెక్కింపు</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Arial", sans-serif;
       text-align: center;
       margin: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
     }
 
     .form-container {
       display: inline-block;
       text-align: left;
       border: 3px double #333;
-      padding: 20px;
-      background-color: #fefefe;
+      padding: 30px;
+      background-color: #fff;
       margin-bottom: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
     }
 
     .form-row {
@@ -25,14 +35,15 @@
       justify-content: space-between;
       align-items: center;
       border: 1px solid #999;
-      padding: 10px;
-      margin: 5px 0;
+      padding: 14px;
+      margin: 10px 0;
       gap: 10px;
       position: relative;
-      background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=60');
+      background-image: url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1000&q=80');
       background-size: cover;
       background-position: center;
       color: white;
+      border-radius: 8px;
     }
 
     .form-row::before {
@@ -41,8 +52,9 @@
       top: 0; left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0, 0, 0, 0.45);
       z-index: 0;
+      border-radius: 8px;
     }
 
     .form-row label,
@@ -52,30 +64,34 @@
     }
 
     .form-row label {
-      width: 220px;
+      width: 45%;
       font-weight: bold;
+      font-size: 1.2rem;
       color: #fff;
-      cursor: pointer;
     }
 
     .form-row input[type="number"],
     .form-row input[type="text"] {
-      width: 200px;
-      padding: 8px;
+      width: 50%;
+      padding: 12px;
+      font-size: 1.2rem;
       border: 1px solid #ccc;
-      background-color: rgba(255, 255, 255, 0.85);
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 6px;
       color: #000;
     }
 
     button {
-      padding: 10px 20px;
+      padding: 14px 30px;
       margin-top: 20px;
-      font-size: 16px;
+      font-size: 1.3rem;
+      font-weight: bold;
       cursor: pointer;
       background-color: #007bff;
       color: #fff;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
+      width: 100%;
     }
 
     button:hover {
@@ -83,11 +99,15 @@
     }
 
     #result {
-      padding: 15px;
+      padding: 20px;
       border: 3px double #333;
-      background-color: #f9f9f9;
+      background-color: #fff;
       display: inline-block;
       text-align: left;
+      max-width: 500px;
+      width: 90%;
+      border-radius: 10px;
+      font-size: 1.2rem;
     }
 
     #result table {
@@ -96,7 +116,7 @@
     }
 
     #result td {
-      padding: 8px 12px;
+      padding: 10px 12px;
       vertical-align: top;
     }
 
@@ -159,7 +179,7 @@
 
     function speak(text) {
       const msg = new SpeechSynthesisUtterance(text);
-      msg.lang = "te-IN"; // Telugu India
+      msg.lang = "te-IN";
       window.speechSynthesis.speak(msg);
     }
 
@@ -190,17 +210,14 @@
         return;
       }
 
-      // Calculate total days
       const timeDiff = toDate - fromDate;
       const totalDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+      const totalTimeInMonths = totalDays / 30;
+      const months = Math.floor(totalTimeInMonths);
+      const days = Math.round((totalTimeInMonths - months) * 30);
 
-      // Convert days to months and remaining days
-      const months = Math.floor(totalDays / 30);
-      const days = totalDays % 30;
-
-      // Calculate interest based on total days
-      const dailyInterestRate = (interestPer100 / 100) / 30;
-      const interest = (principal * dailyInterestRate * totalDays).toFixed(2);
+      const monthlyRate = interestPer100 / 100;
+      const interest = (principal * monthlyRate * totalTimeInMonths).toFixed(2);
       const totalAmount = (principal + parseFloat(interest)).toFixed(2);
 
       document.getElementById('result').innerHTML = `
