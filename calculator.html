@@ -167,15 +167,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    flatpickr("#fromDate", {
-      dateFormat: "Y-m-d",
-      allowInput: true
-    });
-
-    flatpickr("#toDate", {
-      dateFormat: "Y-m-d",
-      allowInput: true
-    });
+    flatpickr("#fromDate", { dateFormat: "Y-m-d", allowInput: true });
+    flatpickr("#toDate", { dateFormat: "Y-m-d", allowInput: true });
 
     function speak(text) {
       const msg = new SpeechSynthesisUtterance(text);
@@ -211,14 +204,16 @@
       }
 
       const timeDiff = toDate - fromDate;
-      const totalDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+      const totalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24)); // ✅ Use floor to avoid overcounting
       const totalTimeInMonths = totalDays / 30;
       const months = Math.floor(totalTimeInMonths);
       const days = Math.round((totalTimeInMonths - months) * 30);
 
       const monthlyRate = interestPer100 / 100;
-      const interest = (principal * monthlyRate * totalTimeInMonths).toFixed(2);
-      const totalAmount = (principal + parseFloat(interest)).toFixed(2);
+      const perDayRate = monthlyRate / 30;
+      const perDayInterest = (principal * perDayRate).toFixed(2);
+      const totalInterest = (principal * perDayRate * totalDays).toFixed(2);
+      const totalAmount = (principal + parseFloat(totalInterest)).toFixed(2);
 
       document.getElementById('result').innerHTML = `
         <h3>లెక్కింపు ఫలితం:</h3>
@@ -233,7 +228,11 @@
           </tr>
           <tr>
             <td class="label-text">${months} నెలలు ${days} రోజులు వడ్డీ:</td>
-            <td class="value-text">రూ ${interest}</td>
+            <td class="value-text">రూ ${totalInterest}</td>
+          </tr>
+          <tr>
+            <td class="label-text">రోజుకి వడ్డీ:</td>
+            <td class="value-text">రూ ${perDayInterest}</td>
           </tr>
           <tr>
             <td class="label-text">మొత్తం మొత్తం:</td>
