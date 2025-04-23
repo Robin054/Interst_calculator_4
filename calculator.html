@@ -133,19 +133,16 @@
         return;
       }
 
-      const Y1 = fromDate.getFullYear();
-      const M1 = fromDate.getMonth() + 1;
-      const D1 = fromDate.getDate();
-      const Y2 = toDate.getFullYear();
-      const M2 = toDate.getMonth() + 1;
-      const D2 = toDate.getDate();
+      // Use 30/360 method with proper handling
+      let Y1 = fromDate.getFullYear();
+      let M1 = fromDate.getMonth() + 1;
+      let D1 = Math.min(fromDate.getDate(), 30);
+      let Y2 = toDate.getFullYear();
+      let M2 = toDate.getMonth() + 1;
+      let D2 = Math.min(toDate.getDate(), 30);
 
-      const d1 = Math.min(D1, 30);
-      const d2 = Math.min(D2, 30);
-
-      // Include the end date by adding 1
-      const totalDays = (Y2 - Y1) * 360 + (M2 - M1) * 30 + (d2 - d1) + 1;
-
+      // Add 1 to include the end date in interest
+      const totalDays = ((Y2 - Y1) * 360 + (M2 - M1) * 30 + (D2 - D1)) + 1;
       const months = Math.floor(totalDays / 30);
       const days = totalDays % 30;
 
