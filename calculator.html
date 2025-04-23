@@ -1,101 +1,109 @@
 <!DOCTYPE html>
 <html lang="te">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>సాధారణ వడ్డీ లెక్కింపు</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <style>
     body {
-      font-family: "Arial", sans-serif;
+      font-family: Arial, sans-serif;
       text-align: center;
-      margin: 20px;
+      padding: 20px;
       background-color: #f4f4f4;
     }
-    h2 { font-size: 2rem; margin-bottom: 20px; }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
     .form-container {
       display: inline-block;
-      text-align: left;
-      border: 3px double #333;
-      padding: 30px;
+      padding: 25px;
       background-color: #fff;
-      margin-bottom: 20px;
       border-radius: 10px;
+      border: 2px solid #333;
       max-width: 500px;
-      width: 90%;
+      width: 100%;
     }
+
     .form-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid #999;
-      padding: 14px;
       margin: 10px 0;
-      gap: 10px;
-      background: rgba(0,0,0,0.1);
-      border-radius: 8px;
     }
+
     .form-row label {
       width: 45%;
       font-weight: bold;
-      font-size: 1.1rem;
     }
-    .form-row input[type="number"],
-    .form-row input[type="text"] {
+
+    .form-row input {
       width: 50%;
-      padding: 10px;
-      font-size: 1.1rem;
-      border-radius: 6px;
+      padding: 8px;
+      font-size: 1rem;
     }
+
     button {
-      padding: 14px 30px;
       margin-top: 20px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
+      padding: 12px 24px;
+      font-size: 1.1rem;
       background-color: #007bff;
-      color: #fff;
+      color: white;
       border: none;
       border-radius: 8px;
-      width: 100%;
+      cursor: pointer;
     }
-    button:hover { background-color: #0056b3; }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
     #result {
+      margin-top: 25px;
       padding: 20px;
-      border: 3px double #333;
       background-color: #fff;
-      display: inline-block;
-      text-align: left;
-      max-width: 500px;
-      width: 90%;
+      border: 2px solid #333;
       border-radius: 10px;
-      font-size: 1.1rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
     }
-    .label-text { font-weight: bold; }
-    .value-text { color: red; font-weight: bold; text-align: right; }
-    table { width: 100%; }
-    td { padding: 8px; }
+
+    .label-text {
+      font-weight: bold;
+    }
+
+    .value-text {
+      color: red;
+      float: right;
+    }
   </style>
 </head>
 <body>
+
   <h2>సాధారణ వడ్డీ లెక్కింపు</h2>
+
   <div class="form-container">
     <div class="form-row">
       <label for="principal">ప్రధాన మొత్తం (రూ):</label>
-      <input type="number" id="principal" placeholder="మొత్తం నమోదు చేయండి" required>
+      <input type="number" id="principal" required>
     </div>
     <div class="form-row">
       <label for="interestPer100">ప్రతి ₹100కి వడ్డీ (రూ):</label>
-      <input type="number" id="interestPer100" placeholder="ఉదాహరణకు: 2" step="0.01" required>
+      <input type="number" id="interestPer100" step="0.01" required>
     </div>
     <div class="form-row">
       <label for="fromDate">ప్రారంభ తేదీ:</label>
-      <input type="text" id="fromDate" placeholder="తేదీ ఎంచుకోండి" required>
+      <input type="text" id="fromDate" required>
     </div>
     <div class="form-row">
       <label for="toDate">ముగింపు తేదీ:</label>
-      <input type="text" id="toDate" placeholder="తేదీ ఎంచుకోండి" required>
+      <input type="text" id="toDate" required>
     </div>
+
     <button onclick="calculateInterest()">వడ్డీ లెక్కించండి</button>
   </div>
 
@@ -107,58 +115,55 @@
     flatpickr("#toDate", { dateFormat: "Y-m-d" });
 
     function calculateInterest() {
-      const principal = parseFloat(document.getElementById('principal').value);
-      const interestPer100 = parseFloat(document.getElementById('interestPer100').value);
-      const fromDate = new Date(document.getElementById('fromDate').value);
-      const toDate = new Date(document.getElementById('toDate').value);
+      const principal = parseFloat(document.getElementById("principal").value);
+      const interestPer100 = parseFloat(document.getElementById("interestPer100").value);
+      const fromDateStr = document.getElementById("fromDate").value;
+      const toDateStr = document.getElementById("toDate").value;
 
-      if (isNaN(principal) || principal <= 0 ||
-          isNaN(interestPer100) || interestPer100 <= 0 ||
-          !fromDate || !toDate || fromDate > toDate) {
-        alert("దయచేసి సరైన సమాచారాన్ని నమోదు చేయండి.");
+      if (!principal || !interestPer100 || !fromDateStr || !toDateStr) {
+        alert("దయచేసి అన్ని ఖాళీలు పూరించండి.");
         return;
       }
 
-      // Calculate the difference in days using 360-day year assumption
-      const msPerDay = 1000 * 60 * 60 * 24;
-      const totalDays = Math.round((toDate - fromDate) / msPerDay) + 1;
+      const fromDate = new Date(fromDateStr);
+      const toDate = new Date(toDateStr);
+      if (fromDate > toDate) {
+        alert("ముగింపు తేదీ ప్రారంభ తేదీ కన్నా ఎక్కువగా ఉండాలి.");
+        return;
+      }
 
-      // Calculate months based on the 360-day year assumption (12 months, each month 30 days)
-      const totalMonths = Math.floor(totalDays / 30);  // Each month is 30 days
-      const remainingDays = totalDays % 30;
+      // Extract date parts
+      const Y1 = fromDate.getFullYear();
+      const M1 = fromDate.getMonth() + 1;
+      const D1 = fromDate.getDate();
+      const Y2 = toDate.getFullYear();
+      const M2 = toDate.getMonth() + 1;
+      const D2 = toDate.getDate();
 
-      // Calculate interest
-      const ratePerDay = (interestPer100 / 100) / 30; // Per day interest for each 100
-      const perDayInterest = (principal * ratePerDay).toFixed(2);
+      // 30/360 day-count convention
+      let d1 = (D1 === 31) ? 30 : D1;
+      let d2 = (D2 === 31) ? 30 : D2;
+      if (d1 === 30 && D2 === 31) d2 = 30;
+
+      const totalDays = (Y2 - Y1) * 360 + (M2 - M1) * 30 + (d2 - d1);
+      const months = Math.floor(totalDays / 30);
+      const days = totalDays % 30;
+
+      const ratePerDay = (interestPer100 / 100) / 30;
+      const dailyInterest = (principal * ratePerDay).toFixed(2);
       const totalInterest = (principal * ratePerDay * totalDays).toFixed(2);
       const totalAmount = (principal + parseFloat(totalInterest)).toFixed(2);
 
       document.getElementById("result").innerHTML = `
-        <h3>లెక్కింపు ఫలితం:</h3>
-        <table>
-          <tr>
-            <td class="label-text">ప్రధాన మొత్తం:</td>
-            <td class="value-text">రూ ${principal}</td>
-          </tr>
-          <tr>
-            <td class="label-text">వడ్డీ రేటు:</td>
-            <td class="value-text">రూ ${interestPer100} / ₹100</td>
-          </tr>
-          <tr>
-            <td class="label-text">${totalMonths} నెలలు ${remainingDays} రోజులు:</td>
-            <td class="value-text">రూ ${totalInterest}</td>
-          </tr>
-          <tr>
-            <td class="label-text">రోజుకి వడ్డీ:</td>
-            <td class="value-text">రూ ${perDayInterest}</td>
-          </tr>
-          <tr>
-            <td class="label-text">మొత్తం మొత్తం:</td>
-            <td class="value-text">రూ ${totalAmount}</td>
-          </tr>
-        </table>
+        <div><span class="label-text">ప్రధాన మొత్తం:</span> <span class="value-text">రూ ${principal}</span></div>
+        <div><span class="label-text">వడ్డీ రేటు:</span> <span class="value-text">రూ ${interestPer100} ప్రతి ₹100కి</span></div>
+        <div><span class="label-text">కాలం:</span> <span class="value-text">${months} నెలలు ${days} రోజులు</span></div>
+        <div><span class="label-text">రోజుకి వడ్డీ:</span> <span class="value-text">రూ ${dailyInterest}</span></div>
+        <div><span class="label-text">మొత్తం వడ్డీ:</span> <span class="value-text">రూ ${totalInterest}</span></div>
+        <div><span class="label-text">మొత్తం మొత్తం:</span> <span class="value-text">రూ ${totalAmount}</span></div>
       `;
     }
   </script>
+
 </body>
 </html>
