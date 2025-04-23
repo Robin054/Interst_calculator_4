@@ -12,12 +12,7 @@
       margin: 20px;
       background-color: #f4f4f4;
     }
-
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-
+    h2 { font-size: 2rem; margin-bottom: 20px; }
     .form-container {
       display: inline-block;
       text-align: left;
@@ -29,7 +24,6 @@
       max-width: 500px;
       width: 90%;
     }
-
     .form-row {
       display: flex;
       justify-content: space-between;
@@ -38,53 +32,25 @@
       padding: 14px;
       margin: 10px 0;
       gap: 10px;
-      position: relative;
-      background-image: url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1000&q=80');
-      background-size: cover;
-      background-position: center;
-      color: white;
+      background: rgba(0,0,0,0.1);
       border-radius: 8px;
     }
-
-    .form-row::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.45);
-      z-index: 0;
-      border-radius: 8px;
-    }
-
-    .form-row label,
-    .form-row input {
-      position: relative;
-      z-index: 1;
-    }
-
     .form-row label {
       width: 45%;
       font-weight: bold;
-      font-size: 1.2rem;
-      color: #fff;
+      font-size: 1.1rem;
     }
-
     .form-row input[type="number"],
     .form-row input[type="text"] {
       width: 50%;
-      padding: 12px;
-      font-size: 1.2rem;
-      border: 1px solid #ccc;
-      background-color: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      font-size: 1.1rem;
       border-radius: 6px;
-      color: #000;
     }
-
     button {
       padding: 14px 30px;
       margin-top: 20px;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: bold;
       cursor: pointer;
       background-color: #007bff;
@@ -93,11 +59,7 @@
       border-radius: 8px;
       width: 100%;
     }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
+    button:hover { background-color: #0056b3; }
     #result {
       padding: 20px;
       border: 3px double #333;
@@ -107,116 +69,69 @@
       max-width: 500px;
       width: 90%;
       border-radius: 10px;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
-
-    #result table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    #result td {
-      padding: 10px 12px;
-      vertical-align: top;
-    }
-
-    .label-text {
-      color: #000;
-      font-weight: bold;
-      width: 60%;
-    }
-
-    .value-text {
-      color: red;
-      font-weight: bold;
-      text-align: right;
-      width: 40%;
-    }
+    .label-text { font-weight: bold; }
+    .value-text { color: red; font-weight: bold; text-align: right; }
+    table { width: 100%; }
+    td { padding: 8px; }
   </style>
 </head>
 <body>
   <h2>సాధారణ వడ్డీ లెక్కింపు</h2>
-
   <div class="form-container">
     <div class="form-row">
-      <label for="principal" onclick="speak('ప్రధాన మొత్తం')">ప్రధాన మొత్తం (రూ):</label>
+      <label for="principal">ప్రధాన మొత్తం (రూ):</label>
       <input type="number" id="principal" placeholder="మొత్తం నమోదు చేయండి" required>
     </div>
-
     <div class="form-row">
-      <label for="interestPer100" onclick="speak('ప్రతి వందకు వడ్డీ')">ప్రతి ₹100కి వడ్డీ (రూ):</label>
+      <label for="interestPer100">ప్రతి ₹100కి వడ్డీ (రూ):</label>
       <input type="number" id="interestPer100" placeholder="ఉదాహరణకు: 2" step="0.01" required>
     </div>
-
     <div class="form-row">
-      <label for="fromDate" onclick="speak('ప్రారంభ తేదీ')">ప్రారంభ తేదీ:</label>
+      <label for="fromDate">ప్రారంభ తేదీ:</label>
       <input type="text" id="fromDate" placeholder="తేదీ ఎంచుకోండి" required>
     </div>
-
     <div class="form-row">
-      <label for="toDate" onclick="speak('ముగింపు తేదీ')">ముగింపు తేదీ:</label>
+      <label for="toDate">ముగింపు తేదీ:</label>
       <input type="text" id="toDate" placeholder="తేదీ ఎంచుకోండి" required>
     </div>
-
-    <div style="text-align: center;">
-      <button onclick="calculateInterest()">వడ్డీ లెక్కించండి</button>
-    </div>
+    <button onclick="calculateInterest()">వడ్డీ లెక్కించండి</button>
   </div>
 
   <div id="result"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    flatpickr("#fromDate", { dateFormat: "Y-m-d", allowInput: true });
-    flatpickr("#toDate", { dateFormat: "Y-m-d", allowInput: true });
-
-    function speak(text) {
-      const msg = new SpeechSynthesisUtterance(text);
-      msg.lang = "te-IN";
-      window.speechSynthesis.speak(msg);
-    }
+    flatpickr("#fromDate", { dateFormat: "Y-m-d" });
+    flatpickr("#toDate", { dateFormat: "Y-m-d" });
 
     function calculateInterest() {
       const principal = parseFloat(document.getElementById('principal').value);
       const interestPer100 = parseFloat(document.getElementById('interestPer100').value);
-      const fromDateStr = document.getElementById('fromDate').value;
-      const toDateStr = document.getElementById('toDate').value;
+      const fromDate = new Date(document.getElementById('fromDate').value);
+      const toDate = new Date(document.getElementById('toDate').value);
 
-      if (isNaN(principal) || principal <= 0) {
-        alert('దయచేసి సరైన ప్రధాన మొత్తాన్ని నమోదు చేయండి.');
-        return;
-      }
-      if (isNaN(interestPer100) || interestPer100 <= 0) {
-        alert('దయచేసి సరైన వడ్డీ నమోదు చేయండి.');
-        return;
-      }
-      if (!fromDateStr || !toDateStr) {
-        alert('దయచేసి ప్రారంభ మరియు ముగింపు తేదీలను ఎంచుకోండి.');
+      if (isNaN(principal) || principal <= 0 ||
+          isNaN(interestPer100) || interestPer100 <= 0 ||
+          !fromDate || !toDate || fromDate > toDate) {
+        alert("దయచేసి సరైన సమాచారాన్ని నమోదు చేయండి.");
         return;
       }
 
-      const fromDate = new Date(fromDateStr);
-      const toDate = new Date(toDateStr);
-
-      if (fromDate > toDate) {
-        alert('ప్రారంభ తేదీ ముగింపు తేదీ కన్నా ముందు ఉండాలి.');
-        return;
-      }
-
-      // Add 1 day to include the last day
-      const timeDiff = toDate - fromDate + (1000 * 60 * 60 * 24); 
-      const totalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      // Include last day
+      const msPerDay = 1000 * 60 * 60 * 24;
+      const totalDays = Math.round((toDate - fromDate) / msPerDay) + 1;
 
       const months = Math.floor(totalDays / 30);
       const days = totalDays % 30;
 
-      const monthlyRate = interestPer100 / 100;
-      const perDayRate = monthlyRate / 30;
-      const perDayInterest = (principal * perDayRate).toFixed(2);
-      const totalInterest = (principal * perDayRate * totalDays).toFixed(2);
+      const ratePerDay = (interestPer100 / 100) / 30;
+      const perDayInterest = (principal * ratePerDay).toFixed(2);
+      const totalInterest = (principal * ratePerDay * totalDays).toFixed(2);
       const totalAmount = (principal + parseFloat(totalInterest)).toFixed(2);
 
-      document.getElementById('result').innerHTML = `
+      document.getElementById("result").innerHTML = `
         <h3>లెక్కింపు ఫలితం:</h3>
         <table>
           <tr>
@@ -225,10 +140,10 @@
           </tr>
           <tr>
             <td class="label-text">వడ్డీ రేటు:</td>
-            <td class="value-text">రూ ${interestPer100} ప్రతి ₹100కి</td>
+            <td class="value-text">రూ ${interestPer100} / ₹100</td>
           </tr>
           <tr>
-            <td class="label-text">${months} నెలలు ${days} రోజులు వడ్డీ:</td>
+            <td class="label-text">${months} నెలలు ${days} రోజులు:</td>
             <td class="value-text">రూ ${totalInterest}</td>
           </tr>
           <tr>
